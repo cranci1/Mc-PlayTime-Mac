@@ -50,7 +50,7 @@ Check the [Soon](/soon.md) page to understand more.
 ## How to use
 
 > [!IMPORTANT]
-> Python is required to use this [python installer](https://www.python.org/downloads/)
+> Python is required to run this file. Install this: [python installer](https://www.python.org/downloads/)
 
 Clone repo:
 
