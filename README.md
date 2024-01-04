@@ -16,8 +16,7 @@ It currently works on:
 | Minecraft Launcher | :white_check_mark: |
 | Tlauncher Legacy   | :white_check_mark: |
 | Tlauncher   | :white_check_mark: |
-| GDLauncher   | 🔜 |
-| CourseForge   | :x: |
+| GDLauncher   | :white_check_mark: |
 
 </td><td>
     
@@ -36,6 +35,7 @@ It currently works on:
 | ATLauncher   |  :white_check_mark: |
 | Prism Launcher   | :white_check_mark:  |
 | Modrinth   | :white_check_mark: |
+| CourseForge   | :white_check_mark: |
 
 </td></tr>
 </table>
@@ -75,3 +75,7 @@ Run the script:
 ```sh
 python3 mc-time.py
 ```
+---
+## Custom Path
+
+To use a custom path you just need to find the path to a log folder. (The name doesn't have to be logs/log) It only requires that the folder needs to have files with .log.gz extension.
