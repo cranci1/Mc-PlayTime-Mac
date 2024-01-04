@@ -2,6 +2,7 @@
 
 This is a simple python script made to check all the logs files on some minecraft launchers, to get the Total playtime on that launcher (Soon will have a 'All' option to check all launchers).
 <br>
+<br>
 It currently works on:
 
 <table>
@@ -42,6 +43,7 @@ It currently works on:
 </table>
 
 Check the [Soon](/soon.md) page to understand more about the unsupported launcher/clients.
+<br>
 <br>
 Labymod and tlauncher use the normal directory of minecraft logs.
 
