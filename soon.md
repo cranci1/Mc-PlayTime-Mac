@@ -11,9 +11,8 @@ On this page you ill be able to understand why some launchers/clients wont be su
 | Client/Launcher | UnSupported |
 | ------- | :-------: |
 | Feather Client| :white_check_mark: |
-| MultiMC   | :white_check_mark: |
 | ATLauncher   |  :white_check_mark: |
-| Prism Launcher   | :white_check_mark:  |
+| CourseForge   | :white_check_mark: |
 
 </td></tr>
 </table>
@@ -27,10 +26,11 @@ On this page you ill be able to understand why some launchers/clients wont be su
 
 Unfurtunatly Feather Client doesn't support mac so there is no way to make it work.
 
-### MultiMC/ATLauncher/Prism Launcher
+### ATLauncher
 
-These laucher all use the same directory that is "instances/{MC-Version}/.minecraft/logs" so it will take a bit to support all of them.
+These laucher all use the same directory that is "instances/Minecraft{The mc version}{if fabic/forge}" so it will take a bit to support it:
+es: "/Applications/ATLauncher.app/Contents/java/instances/Minecraft1204withForge/logs"
 
-### Modrinth
+### CurseForge
 
-The normal directory is "~/Library/Application Support/com.modrinth.theseus/profiles/" and then there is the modpack name so it will require a bit of time.
+I dont understand how it works. (havent even tryed)

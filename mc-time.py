@@ -81,30 +81,37 @@ def format_play_time(play_time_seconds):
 
 def choose_launcher():
     print("Available Launchers:")
-    print("1. Minecraft Launcher")
+    print("1. Minecraft Launcher/TLauncher")
     print("2. TLauncher-Legacy")
     print("3. Bad Lion")
     print("4. Lunar Client")
     print("5. GDLauncher")
-    print("6. Custom Path")
+    print("6. Prism Launcher")
+    print("7. MultiMc")
+    print("8. Modrinth")
+    print("9. Custom Path")
 
     while True:
         choice = input("Enter the corresponding number: ")
 
         if choice == "1":
             logs_directory = os.path.expanduser("~/Library/Application Support/minecraft/logs")
-            launcher_name = "Minecraft Launcher"
+            launcher_name = "Minecraft Launcher/TLauncher"
+
         elif choice == "2":
             logs_directory = os.path.expanduser("~/Library/Application Support/tlauncher/legacy/logs")
             launcher_name = "TLauncher-Legacy"
+
         elif choice == "3":
             logs_directory = os.path.expanduser("~/Library/Application Support/minecraft/logs/blclient/minecraft/")
             launcher_name = "Bad Lion"
+
         elif choice == "4":
             logs_directory = os.path.expanduser("~/.lunarclient/offline/multiver/logs")
             launcher_name = "Lunar Client"
+
         elif choice == "5":
-            sub_choice = input("Choose: 'fabric' (1), 'forge' (2) or 'vanilla' (3):")
+            sub_choice = input("Choose: 'fabric' (1), 'forge' (2), 'vanilla' (3) or 'ModPack' (4):")
             if sub_choice == '1':
                 logs_directory = os.path.expanduser("~/Library/Application Support/gdlauncher_next/instances/Minecraft fabric/logs")
                 launcher_name = "GDLauncher (fabric)"
@@ -114,10 +121,30 @@ def choose_launcher():
             elif sub_choice == '3':
                 logs_directory = os.path.expanduser("~/Library/Application Support/gdlauncher_next/instances/Minecraft vanilla/logs")
                 launcher_name = "GDLauncher (vanilla)"
+            elif sub_choice == "4":
+                modpack_name = input("Enter the ModPack name: ")
+                logs_directory = os.path.expanduser(f"~/Library/Application Support/gdlauncher_next/instances/{modpack_name}/logs")
+                launcher_name = f"ModPack ({modpack_name})"
             else:
                 print("Invalid sub-choice. Please try again.")
                 continue
+
         elif choice == "6":
+            versionPrism = input("Enter the version/modpack name: ")
+            logs_directory = os.path.expanduser(f"~/Library/Application Support/PrismLauncher/instances/{versionPrism}/.minecraft/logs")
+            launcher_name = f"Prism Launcher, {versionPrism}"
+            
+        elif choice == "7":
+            versionMulti = input("Enter the version/modpack name: ")
+            logs_directory = os.path.expanduser(f"/Applications/MultiMC.app/Data/instances/{versionMulti}/.minecraft/logs/")
+            launcher_name = f"MultiMc, {versionMulti}"
+
+        elif choice == "8":
+            Modrinth = input("Enter the Modpack name: ")
+            logs_directory = os.path.expanduser(f"~/Library/Application Support/com.modrinth.theseus/profiles/{Modrinth}/logs")
+            launcher_name = f"Modrinth, {Modrinth}"    
+
+        elif choice == "9":
             custom_path = input("Enter the path to the logs folder: ")
             logs_directory = os.path.join(custom_path, "logs")
             launcher_name = "Custom Path"

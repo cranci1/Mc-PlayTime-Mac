@@ -14,9 +14,12 @@ It currently works on:
 | Launcher  | Supported |
 | ------- | :-------: |
 | Minecraft Launcher | :white_check_mark: |
-| Tlauncher Legacy   | :white_check_mark: |
 | Tlauncher   | :white_check_mark: |
+| Tlauncher Legacy   | :white_check_mark: |
 | GDLauncher   | :white_check_mark: |
+| Prism Launcher   | :white_check_mark:  |
+| MultiMC   | :white_check_mark: |
+| Modrinth   | :white_check_mark: |
 
 </td><td>
     
@@ -31,10 +34,7 @@ It currently works on:
 | Client/Launcher | UnSupported |
 | ------- | :-------: |
 | Feather Client| :white_check_mark: |
-| MultiMC   | :white_check_mark: |
 | ATLauncher   |  :white_check_mark: |
-| Prism Launcher   | :white_check_mark:  |
-| Modrinth   | :white_check_mark: |
 | CourseForge   | :white_check_mark: |
 
 </td></tr>
@@ -43,7 +43,7 @@ It currently works on:
 Check the [Soon](/soon.md) page to understand more.
 
 > [!Note]
-> More Launcher will be working pretty soon!
+> More Launcher will be working pretty soon! And if i miss any launcher please let me know!
 
 ---
 
@@ -75,7 +75,9 @@ Run the script:
 ```sh
 python3 mc-time.py
 ```
+
 ---
+
 ## Custom Path
 
 To use a custom path you just need to find the path to a log folder. (The name doesn't have to be logs/log) It only requires that the folder needs to have files with .log.gz extension.
