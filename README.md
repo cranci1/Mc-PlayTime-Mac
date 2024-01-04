@@ -16,8 +16,7 @@ It currently works on:
 | Minecraft Launcher | :white_check_mark: |
 | Tlauncher Legacy   | :white_check_mark: |
 | Tlauncher   | :white_check_mark: |
-| GDLauncher   | 🔜 |
-| CourseForge   | :x: |
+| GDLauncher   | :white_check_mark: |
 
 </td><td>
     
@@ -36,6 +35,7 @@ It currently works on:
 | ATLauncher   |  :white_check_mark: |
 | Prism Launcher   | :white_check_mark:  |
 | Modrinth   | :white_check_mark: |
+| CourseForge   | :white_check_mark: |
 
 </td></tr>
 </table>
