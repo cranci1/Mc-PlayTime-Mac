@@ -40,7 +40,7 @@ It currently works on:
 </td></tr>
 </table>
 
-<p>Check the [Soon](soon.md) page to understand more.</p>
+Check the [Soon](/soon.md) page to understand more.
 
 > [!Note]
 > More Launcher will be working pretty soon!
