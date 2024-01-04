@@ -1,6 +1,7 @@
 # Mc-PlayTime-Mac
 
 This is a simple python script made to check all the logs files on some minecraft launchers, to get the Total playtime on that launcher (Soon will have a 'All' option to check all launchers).
+<br>
 It currently works on:
 
 <table>
@@ -40,7 +41,9 @@ It currently works on:
 </td></tr>
 </table>
 
-Check the [Soon](/soon.md) page to understand more.
+Check the [Soon](/soon.md) page to understand more about the unsupported launcher/clients.
+<br>
+Labymod and tlauncher use the normal directory of minecraft logs.
 
 > [!Note]
 > More Launcher will be working pretty soon! And if i miss any launcher please let me know!
