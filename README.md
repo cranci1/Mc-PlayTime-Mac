@@ -32,11 +32,11 @@ It currently works on:
 
 </td><td>
     
-| Client/Launcher | UnSupported |
+| Client/Launcher | Supported |
 | ------- | :-------: |
-| Feather Client| :white_check_mark: |
-| ATLauncher   |  :white_check_mark: |
-| CourseForge   | :white_check_mark: |
+| Feather Client| :x: |
+| ATLauncher   |  :x: |
+| CourseForge   | :x: |
 
 </td></tr>
 </table>
