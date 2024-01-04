@@ -27,7 +27,7 @@ It currently works on:
 | ------- | :-------: |
 | Lunar Client   | :white_check_mark: |
 | Badlion Client| :white_check_mark: |
-| Labymod | :x: |
+| Labymod | :white_check_mark: |
 
 </td><td>
     
