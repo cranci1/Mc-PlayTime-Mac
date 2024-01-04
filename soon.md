@@ -18,7 +18,7 @@ On this page you ill be able to understand why some launchers/clients wont be su
 </table>
 
 > [!Note]
-> Maybe it can happen that one of the launcher/clients become supported.
+> With time they will be supported!
 
 ---
 
@@ -29,6 +29,7 @@ Unfurtunatly Feather Client doesn't support mac so there is no way to make it wo
 ### ATLauncher
 
 This laucher use the directory: "instances/Minecraft{The mc version}{if fabic/forge}" so it will take a bit to support it:
+<br>
 es: "/Applications/ATLauncher.app/Contents/java/instances/Minecraft1204withForge/logs"
 
 ### CurseForge
