@@ -28,7 +28,7 @@ Unfurtunatly Feather Client doesn't support mac so there is no way to make it wo
 
 ### ATLauncher
 
-These laucher all use the same directory that is "instances/Minecraft{The mc version}{if fabic/forge}" so it will take a bit to support it:
+This laucher use the directory: "instances/Minecraft{The mc version}{if fabic/forge}" so it will take a bit to support it:
 es: "/Applications/ATLauncher.app/Contents/java/instances/Minecraft1204withForge/logs"
 
 ### CurseForge
