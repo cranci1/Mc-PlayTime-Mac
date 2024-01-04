@@ -85,7 +85,7 @@ def choose_launcher():
     print("2. TLauncher-Legacy")
     print("3. Bad Lion")
     print("4. Lunar Client")
-    print("5. All Logs")
+    print("5. GDLauncher")
     print("6. Custom Path")
 
     while True:
@@ -104,8 +104,19 @@ def choose_launcher():
             logs_directory = os.path.expanduser("~/.lunarclient/offline/multiver/logs")
             launcher_name = "Lunar Client"
         elif choice == "5":
-            logs_directory = ""
-            launcher_name = "All Launchers"
+            sub_choice = input("Choose: 'fabric' (1), 'forge' (2) or 'vanilla' (3):")
+            if sub_choice == '1':
+                logs_directory = os.path.expanduser("~/Library/Application Support/gdlauncher_next/instances/Minecraft fabric/logs")
+                launcher_name = "GDLauncher (fabric)"
+            elif sub_choice == '2':
+                logs_directory = os.path.expanduser("~/Library/Application Support/gdlauncher_next/instances/Minecraft forge/logs")
+                launcher_name = "GDLauncher (forge)"
+            elif sub_choice == '3':
+                logs_directory = os.path.expanduser("~/Library/Application Support/gdlauncher_next/instances/Minecraft vanilla/logs")
+                launcher_name = "GDLauncher (vanilla)"
+            else:
+                print("Invalid sub-choice. Please try again.")
+                continue
         elif choice == "6":
             custom_path = input("Enter the path to the logs folder: ")
             logs_directory = os.path.join(custom_path, "logs")
@@ -118,7 +129,6 @@ def choose_launcher():
             return logs_directory, launcher_name
         else:
             print(f"The logs directory for {launcher_name} does not exist. Please choose again.")
-
 def main():
     console = Console()
 
