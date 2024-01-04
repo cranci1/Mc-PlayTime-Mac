@@ -75,3 +75,7 @@ Run the script:
 ```sh
 python3 mc-time.py
 ```
+---
+## Custom Path
+
+To use a custom path you just need to find the path to a log folder. (The name doesn't have to be logs/log) It only requires that the folder needs to have files with .log.gz extension.
