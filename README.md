@@ -1,6 +1,6 @@
 # Mc-PlayTime-Mac
 
-This is a simple python script made to check all the logs files on some minecraft launchers.
+This is a simple python script made to check all the logs files on some minecraft launchers, to get the Total playtime on that launcher (Soon will have a 'All' option to check all launchers).
 It currently works on:
 
 <table>
