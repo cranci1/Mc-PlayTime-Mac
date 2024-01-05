@@ -33,7 +33,6 @@ It currently works on:
 | Labymod | :white_check_mark: |
 | Feather Client| :x: |
 
-</td><td>
 </table>
 
 Check the [Soon](/soon.md) page to understand more about the unsupported launcher/clients.
