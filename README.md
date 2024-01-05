@@ -22,6 +22,7 @@ It currently works on:
 | Prism Launcher   | :white_check_mark:  |
 | MultiMC   | :white_check_mark: |
 | Modrinth   | :white_check_mark: |
+| CourseForge   | :white_check_mark: |
 
 </td><td>
     
@@ -37,7 +38,6 @@ It currently works on:
 | ------- | :-------: |
 | Feather Client| :x: |
 | ATLauncher   |  :x: |
-| CourseForge   | :x: |
 
 </td></tr>
 </table>
