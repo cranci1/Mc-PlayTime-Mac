@@ -9,7 +9,6 @@ It currently works on:
 <tr>
         <th>Supported Launchers</th>
         <th>Supported Clients</th>
-        <th>Require Time</th>
 </tr>
 <tr><td>
         
@@ -23,6 +22,7 @@ It currently works on:
 | MultiMC   | :white_check_mark: |
 | Modrinth   | :white_check_mark: |
 | CourseForge   | :white_check_mark: |
+| ATLauncher   |  :white_check_mark: |
 
 </td><td>
     
@@ -31,15 +31,9 @@ It currently works on:
 | Lunar Client   | :white_check_mark: |
 | Badlion Client| :white_check_mark: |
 | Labymod | :white_check_mark: |
+| Feather Client| :x: |
 
 </td><td>
-    
-| Client/Launcher | Supported |
-| ------- | :-------: |
-| Feather Client| :x: |
-| ATLauncher   |  :x: |
-
-</td></tr>
 </table>
 
 Check the [Soon](/soon.md) page to understand more about the unsupported launcher/clients.

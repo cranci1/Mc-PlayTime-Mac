@@ -88,9 +88,10 @@ def choose_launcher():
     print("5. GDLauncher")
     print("6. Prism Launcher")
     print("7. MultiMc")
-    print("8. Modrinth")
-    print("9. CurseForge")
-    print("10. Custom Path")
+    print("8. ATLauncher")
+    print("9. Modrinth")
+    print("10. CurseForge")
+    print("11. Custom Path")
 
     while True:
         choice = input("Choose The Launcher: ")
@@ -125,18 +126,45 @@ def choose_launcher():
             versionMulti = input("Enter the Instance name: ")
             logs_directory = os.path.expanduser(f"/Applications/MultiMC.app/Data/instances/{versionMulti}/.minecraft/logs/")
             launcher_name = f"MultiMc, {versionMulti}"
-
+            
         elif choice == "8":
+            original_versionAT = input("Enter the version: ")
+            versionAT = original_versionAT.replace(".", "")
+
+            sub_choice = input("1. Vanilla\n2. Fabric\n3. Forge\n4. Legacy Fabric\n5. NeoForge\n6. Quilt\nChoose the loader:")
+            if sub_choice == '1':
+                logs_directory = os.path.expanduser(f"/Applications/ATLauncher.app/Contents/Java/instances/Minecraft{versionAT}/logs")
+                launcher_name = f"ATLauncher on {original_versionAT} Vanilla"
+            elif sub_choice == '2':
+                logs_directory = os.path.expanduser(f"/Applications/ATLauncher.app/Contents/Java/instances/Minecraft{versionAT}withFabric/logs")
+                launcher_name = f"ATLauncher on {original_versionAT} Fabric"
+            elif sub_choice == '3':
+                logs_directory = os.path.expanduser(f"/Applications/ATLauncher.app/Contents/Java/instances/Minecraft{versionAT}withForge/logs")
+                launcher_name = f"ATLauncher on {original_versionAT} Forge"
+            elif sub_choice == '4':
+                logs_directory = os.path.expanduser(f"/Applications/ATLauncher.app/Contents/Java/instances/Minecraft{versionAT}withLegacyFabric/logs")
+                launcher_name = f"ATLauncher on {original_versionAT} Legacy Fabric"
+            elif sub_choice == '5':
+                logs_directory = os.path.expanduser(f"/Applications/ATLauncher.app/Contents/Java/instances/Minecraft{versionAT}withNeoForge/logs")
+                launcher_name = f"ATLauncher on {original_versionAT} NeoForge"
+            elif sub_choice == '6':
+                logs_directory = os.path.expanduser(f"/Applications/ATLauncher.app/Contents/Java/instances/Minecraft{versionAT}withQuilt/logs")
+                launcher_name = f"ATLauncher on {original_versionAT} Quilt" 
+            else:
+                print("Invalid sub-choice. Please try again.")
+                continue
+
+        elif choice == "9":
             Modrinth = input("Enter the Modpack name: ")
             logs_directory = os.path.expanduser(f"~/Library/Application Support/com.modrinth.theseus/profiles/{Modrinth}/logs")
             launcher_name = f"Modrinth, {Modrinth}"
 
-        elif choice == "9":
+        elif choice == "10":
             ModPackCurse = input("Enter the Modpack name: ")
             logs_directory = os.path.expanduser(f"~/Documents/curseforge/minecraft/Instances/{ModPackCurse}/logs")
             launcher_name = "CurseForge"            
 
-        elif choice == "10":
+        elif choice == "11":
             custom_path = input("Enter the path to the logs folder: ")
             logs_directory = os.path.join(custom_path, "logs")
             launcher_name = "Custom Path"
@@ -162,7 +190,7 @@ def main():
 
         # Loop through all .log.gz files in the specified directory
         for filename in os.listdir(logs_directory):
-            if filename.endswith(".log.gz") or (launcher_name == "CurseForge" or "BadLion Client" and filename.endswith(".log")):
+            if filename.endswith(".log.gz") or (launcher_name == "CurseForge" or "BadLion Client" or "ATLauncher" and filename.endswith(".log")):
                 log_file_path = os.path.join(logs_directory, filename)
                 play_time_seconds = process_log_file(log_file_path, launcher_name)
                 total_play_time += play_time_seconds
