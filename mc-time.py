@@ -1,49 +1,43 @@
 import os
 import gzip
 from datetime import datetime
-from pyfiglet import figlet_format
-from rich import print
+from pyfiglet import Figlet
 from rich.console import Console
 from rich.table import Table
-import concurrent.futures
 from rich.progress import Progress, SpinnerColumn, TextColumn
+from rich.theme import Theme
+from rich.panel import Panel
+from rich.text import Text
+import concurrent.futures
+import time
 
-def process_log_file(log_file_path, launcher_name):
-    if launcher_name == "Bad Lion" and not log_file_path.endswith(".log"):
-        print(f"[yellow]Skipping non-log file: {log_file_path}[/yellow]")
-        return 0
+custom_theme = Theme({
+    "info": "cyan",
+    "warning": "yellow",
+    "danger": "red",
+    "success": "green",
+    "bold_cyan": "bold cyan",
+    "bold_green": "bold green",
+    "bold_yellow": "bold yellow",
+    "bold_red": "bold red",
+    "launcher": "bold magenta",
+    "playtime": "bold blue",
+    "directory": "dim white",
+})
 
-    try:
-        if log_file_path.endswith(".log.gz"):
-            with gzip.open(log_file_path, 'rt') as gz_file:
-                log_contents = gz_file.read()
-        elif log_file_path.endswith(".log"):
-            with open(log_file_path, 'rt') as log_file:
-                log_contents = log_file.read()
-        else:
-            print(f"[red]Unsupported file format: {log_file_path}[/red]")
-            return 0
-
-        play_time_seconds = calculate_play_time(log_contents)
-        formatted_play_time = format_play_time(play_time_seconds)
-        print(f"Play time in {log_file_path}: {formatted_play_time}")
-        return play_time_seconds
-    except Exception as e:
-        print(f"[red]Error processing {log_file_path}: {str(e)}[/red]")
-        return 0
+console = Console(theme=custom_theme)
 
 def calculate_play_time(log_contents):
-    lines = log_contents.split('\n')
     start_time, end_time = None, None
-
-    for line in lines:
+    for line in log_contents.splitlines():
         if '[' in line and ']' in line:
             try:
                 time_str = line.split('[')[1].split(']')[0]
-                time = datetime.strptime(time_str, '%H:%M:%S')
+                time = datetime.strptime(time_str, '%H:%M:%S').time()
+                current_time = datetime.combine(datetime.today(), time)
                 if start_time is None:
-                    start_time = time
-                end_time = time
+                    start_time = current_time
+                end_time = current_time
             except ValueError:
                 continue
 
@@ -52,33 +46,61 @@ def calculate_play_time(log_contents):
         return int(elapsed_time.total_seconds())
     return 0
 
-def format_play_time(play_time_seconds):
-    if play_time_seconds < 60:
-        return f"{play_time_seconds} {'second' if play_time_seconds == 1 else 'seconds'}"
-    elif play_time_seconds < 3600:
-        minutes = play_time_seconds // 60
-        seconds = play_time_seconds % 60
-        return f"{minutes} {'minute' if minutes == 1 else 'minutes'} and {seconds} seconds"
-    elif play_time_seconds < 86400:
-        hours = play_time_seconds // 3600
-        minutes = (play_time_seconds % 3600) // 60
-        return f"{hours} {'hour' if hours == 1 else 'hours'} and {minutes} {'minute' if minutes == 1 else 'minutes'}"
+def format_play_time(seconds):
+    units = [("day", 86400), ("hour", 3600), ("minute", 60), ("second", 1)]
+    parts = []
+    for unit, div in units:
+        value = seconds // div
+        if value:
+            seconds %= div
+            parts.append(f"{value} {unit}{'s' if value != 1 else ''}")
+    return ", ".join(parts) or "0 seconds"
+
+def process_log_file(log_file_path, launcher_name):
+    try:
+        if log_file_path.endswith(".log.gz"):
+            with gzip.open(log_file_path, 'rt') as f:
+                log_contents = f.read()
+        elif log_file_path.endswith(".log"):
+            with open(log_file_path, 'rt') as f:
+                log_contents = f.read()
+        else:
+            console.print(f"[danger]Unsupported file: {log_file_path}[/danger]")
+            return 0
+
+        play_time = calculate_play_time(log_contents)
+        console.print(f"  [playtime]>[/] {os.path.basename(log_file_path)}: [bold]{format_play_time(play_time)}[/]")
+        return play_time
+    except Exception as e:
+        console.print(f"[danger]Error processing {log_file_path}: {e}[/danger]")
+        return 0
+
+def get_launcher_path(choice, launcher_paths):
+    if choice in ["5", "6", "7", "9", "10"]:
+        instance_name = console.input("[bold_cyan]Enter instance/modpack name:[/]")
+        return os.path.expanduser(launcher_paths[choice].format(instance_name)), instance_name
+    elif choice == "8":
+        original_version = console.input("[bold_cyan]Enter version (e.g., 1.18.2):[/]").replace(".", "")
+        console.print("\n[bold_cyan]Choose loader:[/]")
+        console.print("1. Vanilla\n2. Fabric\n3. Forge\n4. Legacy Fabric\n5. NeoForge\n6. Quilt")
+        sub_choice = console.input("[bold_cyan]Enter choice (1-6):[/]")
+        loaders = ["Vanilla", "withFabric", "withForge", "withLegacyFabric", "withNeoForge", "withQuilt"]
+        if sub_choice in map(str, range(1, 7)):
+            loader = loaders[int(sub_choice) - 1]
+            return os.path.expanduser(f"/Applications/ATLauncher.app/Contents/Java/instances/Minecraft{original_version}{loader}/logs"), f"ATLauncher {original_version} {loader}"
+        else:
+            console.print("[danger]Invalid loader choice.[/]")
+            return None, None
     else:
-        days = play_time_seconds // 86400
-        hours = (play_time_seconds % 86400) // 3600
-        minutes = (play_time_seconds % 3600) // 60
-        return f"{days} {'day' if days == 1 else 'days'}, {hours} {'hour' if hours == 1 else 'hours'}, and {minutes} {'minute' if minutes == 1 else 'minutes'}"
+        return os.path.expanduser(launcher_paths[choice]), None
 
 def choose_launcher():
-    console = Console()
-    console.print("\n[bold cyan]Available Launchers:[/bold cyan]")
-    launchers = [
-        "Minecraft Launcher/TLauncher", "TLauncher-Legacy", "BadLion Client", "Lunar Client",
-        "GDLauncher", "Prism Launcher", "MultiMc", "ATLauncher", "Modrinth", "CurseForge", "Custom Path"
-    ]
-    for idx, launcher in enumerate(launchers, 1):
-        console.print(f"[cyan]{idx}.[/cyan] {launcher}")
-
+    console.print("\n[bold_cyan]Available Launchers:[/]")
+    launchers = {
+        "1": "Minecraft/TLauncher", "2": "TLauncher-Legacy", "3": "BadLion Client", "4": "Lunar Client",
+        "5": "GDLauncher", "6": "Prism Launcher", "7": "MultiMc", "8": "ATLauncher", "9": "Modrinth",
+        "10": "CurseForge", "11": "Custom Path"
+    }
     launcher_paths = {
         "1": "~/Library/Application Support/minecraft/logs",
         "2": "~/Library/Application Support/tlauncher/legacy/logs",
@@ -93,97 +115,65 @@ def choose_launcher():
         "11": "{}/logs"
     }
 
+    for key, launcher in launchers.items():
+        console.print(f"[info]{key}.[/] {launcher}")
+
     while True:
-        choice = console.input("\n[bold cyan]Choose The Launcher (1-11): [/bold cyan]")
-
-        if choice in launcher_paths:
-            if choice in ["5", "6", "7", "9", "10"]:
-                instance_name = console.input("[bold cyan]Enter the Instance/Modpack name: [/bold cyan]")
-                logs_directory = os.path.expanduser(launcher_paths[choice].format(instance_name))
-                launcher_name = f"{launchers[int(choice)-1]}, {instance_name}"
-            elif choice == "8":
-                original_version = console.input("[bold cyan]Enter the version: [/bold cyan]").replace(".", "")
-                console.print("\n[bold cyan]Choose the loader:[/bold cyan]")
-                console.print("1. Vanilla\n2. Fabric\n3. Forge\n4. Legacy Fabric\n5. NeoForge\n6. Quilt")
-                sub_choice = console.input("[bold cyan]Enter your choice (1-6): [/bold cyan]")
-                loaders = ["Vanilla", "withFabric", "withForge", "withLegacyFabric", "withNeoForge", "withQuilt"]
-                if sub_choice in map(str, range(1, 7)):
-                    loader = loaders[int(sub_choice) - 1]
-                    logs_directory = os.path.expanduser(f"/Applications/ATLauncher.app/Contents/Java/instances/Minecraft{original_version}{loader}/logs")
-                    launcher_name = f"ATLauncher on {original_version} {loader}"
+        choice = console.input("[bold_cyan]Choose launcher (1-11):[/]")
+        if choice in launchers:
+            logs_directory, instance_name = get_launcher_path(choice, launcher_paths)
+            if logs_directory:
+                launcher_name = f"{launchers[choice]}, {instance_name}" if instance_name else launchers[choice]
+                if os.path.exists(logs_directory):
+                    return logs_directory, launcher_name
                 else:
-                    console.print("[red]Invalid choice. Please try again.[/red]")
-                    continue
+                    console.print(f"[danger]Directory not found: {logs_directory}[/]")
+                    if console.input("[bold_yellow]Continue anyway? (yes/no):[/]").lower() == "yes":
+                        return logs_directory, launcher_name
             else:
-                logs_directory = os.path.expanduser(launcher_paths[choice])
-                launcher_name = launchers[int(choice) - 1]
+                continue
         else:
-            console.print("[red]Invalid choice. Please try again.[/red]")
-            continue
-
-        if os.path.exists(logs_directory):
-            return logs_directory, launcher_name
-        else:
-            console.print(f"[red]Directory not found: {logs_directory}[/red]")
-            continue_anyway = console.input("[bold yellow]Directory not found. Continue anyway? (yes/no): [/bold yellow]")
-            if continue_anyway.lower() == "yes":
-                return logs_directory, launcher_name
+            console.print("[danger]Invalid choice.[/]")
 
 def main():
-    console = Console()
+    console.clear()
+    f = Figlet(font='slant')
+    console.print(Panel(Text(f.renderText("MC Playtime"), justify="center", style="bold green")))
 
     while True:
-        art = figlet_format('MC Playtime', font='slant')
-        console.print(f"[bold cyan]{art}[/bold cyan]")
-
         logs_directory, launcher_name = choose_launcher()
-        total_play_time = 0
-
-        log_files = [f for f in os.listdir(logs_directory) 
-                    if f.endswith((".log.gz", ".log"))]
+        log_files = [f for f in os.listdir(logs_directory) if f.endswith((".log.gz", ".log"))]
 
         if not log_files:
-            console.print("[yellow]No log files found in the selected directory.[/yellow]")
-            continue_choice = console.input("[bold cyan]Do you want to check another launcher? (yes/no): [/bold cyan]")
-            if continue_choice.lower() != "yes":
+            console.print("[warning]No log files found.[/]")
+            if console.input("[bold_cyan]Check another launcher? (yes/no):[/]").lower() != "yes":
                 break
             continue
 
+        total_play_time = 0
         with Progress(
             SpinnerColumn(),
             TextColumn("[progress.description]{task.description}"),
+            transient=True,
             console=console
         ) as progress:
-            task = progress.add_task("[cyan]Processing log files...", total=len(log_files))
-            
-            with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
-                future_to_file = {
-                    executor.submit(process_log_file, os.path.join(logs_directory, filename), launcher_name): filename
-                    for filename in log_files
-                }
-                
-                for future in concurrent.futures.as_completed(future_to_file):
-                    filename = future_to_file[future]
-                    try:
-                        play_time_seconds = future.result()
-                        total_play_time += play_time_seconds
-                        progress.advance(task)
-                    except Exception as e:
-                        console.print(f"[red]Error processing {filename}: {str(e)}[/red]")
-
-        formatted_total_play_time = format_play_time(total_play_time)
+            task = progress.add_task("[info]Processing logs...", total=len(log_files))
+            with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
+                futures = [executor.submit(process_log_file, os.path.join(logs_directory, log), launcher_name) for log in log_files]
+                for future in concurrent.futures.as_completed(futures):
+                    total_play_time += future.result()
+                    progress.advance(task)
 
         table = Table(show_header=True, header_style="bold magenta")
-        table.add_column("Launcher", style="dim", width=20)
-        table.add_column("Total Play Time", style="dim", width=20)
-        table.add_row(launcher_name, formatted_total_play_time)
+        table.add_column("Launcher", style="launcher", width=30)
+        table.add_column("Total Play Time", style="playtime", width=20)
+        table.add_row(launcher_name, format_play_time(total_play_time))
+        console.print(Panel(table, title="[bold green]Results[/]"))
 
-        console.print("\n[bold green]Results:[/bold green]")
-        console.print(table)
-
-        continue_choice = console.input("\n[bold cyan]Do you want to check another launcher? (yes/no): [/bold cyan]")
-        if continue_choice.lower() != "yes":
+        if console.input("[bold_cyan]Check another launcher? (yes/no):[/]").lower() != "yes":
             break
 
 if __name__ == "__main__":
+    start_time = time.time()
     main()
+    end_time = time.time()
