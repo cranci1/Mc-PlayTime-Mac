@@ -1,3 +1,2 @@
 pyfiglet
 rich
-concurrent-futures
